@@ -182,24 +182,43 @@ corevalues = {'Ba':[3.45,1,0],
               'Er':[3.451,1,0]}
 shellvalues = {'Ba':[-1.45,1,0],
                 'O':[-2.472,1,0]}
-def gencode(lat,out):
-    #takes a lattice and generates an output file
+def gencode(lat):
+    #takes a lattice and generates an output file called temp.txt
     (c,d,e) = (1,1,1)
 
-    file = open(out,'w+')
+    file = open('temp.txt','w+')
     for x in lat.genfractional():
         if x.modeltype() == 'coreshell':
-            genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:.8f} {:.5f} {:.5f} \n'.format(x.type,'core', x.pos[0],x.pos[1],x.pos[2],corevalues[x.type][0],corevalues[x.type][1],corevalues[x.type][2])
+            genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:7.8f} {:.5f} {:.5f} \n'.format(x.type,'core', x.pos[0],x.pos[1],x.pos[2],corevalues[x.type][0],corevalues[x.type][1],corevalues[x.type][2])
             file.write(genericstring1)
-            genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:.8f} {:.5f} {:.5f} \n'.format(x.type,'shel', x.pos[0],x.pos[1],x.pos[2],shellvalues[x.type][0],shellvalues[x.type][1],shellvalues[x.type][2])
+            genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:9.7f} {:.5f} {:.5f} \n'.format(x.type,'shel', x.pos[0],x.pos[1],x.pos[2],shellvalues[x.type][0],shellvalues[x.type][1],shellvalues[x.type][2])
             file.write(genericstring1)
         else:
             genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:.8f} {:.5f} {:.5f} \n'.format(x.type,'core', x.pos[0],x.pos[1],x.pos[2],corevalues[x.type][0],corevalues[x.type][1],corevalues[x.type][2])
             file.write(genericstring1)
 
     return
-def genwholefile()
 
-gencode(lat,'testing.txt')
+def genwholefile(lat,out):
+    gencode(lat)
+    file = open(out,'w+')
+    preamble = open('preamble','r')
+    temp = open('temp.txt', 'r')
+    postamble = open('postamble','r')
+    try:
+        file.write(prelude)
+    except:
+        print('No prelude')
+        pass
+    file.write(preamble.read())
+    file.write(temp.read())
+    file.write(postamble.read())
 
-print(lat.atoms[1].modeltype())
+test = -1.458627262
+
+print('{:10.8f}'.format(test))
+
+gencode(lat)
+# genwholefile(lat,'test01.txt')
+#
+# print(lat.atoms[1].modeltype())

@@ -1,0 +1,13 @@
+#
+# Keywords:
+#
+opti conp dist nosym full
+#
+# Options:
+#
+title
+BaSrmix
+end
+cell
+  20.031893  20.031897  20.031897  90.000000  90.000000  90.000000
+fractional  1   

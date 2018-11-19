@@ -1,0 +1,55 @@
+totalenergy        -20002.8252027459 eV
+species  14
+Bi     shel   -1.300000
+Bi     core    4.300000
+Ti     core    4.000000
+Na     core    1.000000
+O      core    0.472000
+O      shel   -2.472000
+Al     core    3.000000
+F      core   -2.472000
+F      shel    0.472000
+Ca     core    3.450000
+Ca     shel   -1.450000
+Ba     core    3.450000
+Ba     shel   -1.450000
+Er     core    3.000000
+spring
+Ca     150.00000
+spring
+Ba     76.230000
+spring
+O      15.410000
+spring
+Bi     200.00000
+buck
+O     shel O     shel  22764.0000     0.149000  43.00000      0.00 12.00
+buck
+O     shel Ca    shel  1375.00000     0.332500  15.21000      0.00 12.00
+lennard  7  6
+Ti    core O     shel  1234.2080      471.97230      0.000 12.000
+buck
+O     shel Bi    shel  62864.0000     0.218600  4.200000      0.00 12.00
+buck
+Na    core O     shel  1226.84000     0.306500  0.000000      0.00 12.00
+lennard 16  6
+Mg    core O     shel  21000.000      0.0000000      0.000 12.000
+lennard  4  2
+Mg    core O     shel  23.000000      0.0000000      0.000 12.000
+buck
+Sc    core O     shel  1299.40000     0.331200  0.000000      0.00 12.00
+buck
+Y     core O     shel  1345.10000     0.349100  0.000000      0.00 12.00
+buck
+O     shel Ba    shel  1150.00000     0.380370  55.00000      0.00 12.00
+buck
+Tl    core O     shel  1715.70000     0.306900  0.000000      0.00 12.00
+buck
+Dy    core O     shel  1344.80000     0.352900  0.000000      0.00 12.00
+buck
+Er    core O     shel  1345.02100     0.350714  0.000000      0.00 12.00
+three inter regular
+Ti    core O     core O     core 1.8200       90.00000 &
+  0.000  2.500  0.000  2.500  0.000  3.500
+cutd   4.5000
+dump restart   
