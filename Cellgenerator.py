@@ -9,7 +9,7 @@ class atom(object):
     def __init__(self, pos, type):
         self.pos = pos
         self.type = type
-    def charge(self):
+    def properties(self):
         charges = {'Ba':2,
                    'O':-2,
                    'Ti':4,
@@ -18,7 +18,15 @@ class atom(object):
                    'Ba_v':-2,
                    'Ti_v':-4,
                    'Ti3_v':-3}
+
         return charges[self.type]
+
+    def modeltype(self):
+        types = {'Ba':'coreshell',
+                   'O':'coreshell',
+                   'Ti':'core',
+                   'Er':'core'}
+        return types[self.type]
 
 class lattice(object):
     """contains atoms is a list of all the atoms stored as lattoce
@@ -154,9 +162,44 @@ def supercell(lat,n):
     return lat
 
 ###test code###
-
 lat = supercell (lat,5)
 # lat.geninterstitial((0.1,0.1,0),'O')
 # max = [0,0,0]
-for x in lat.genfractional():
-    print(x.pos)
+
+
+# for x in lat.genfractional():
+#     print(str(x.pos) + ' ' + str(x.type))
+# atomdict = {'Ba':'Ba  core '}
+# test = 5.24242424
+# a = 'a'
+# b = 'a'
+#genericstring1 = '{:.3f} {:.3f}'.format(test,test) #
+##def gencode(lat):
+#print(genericstring1)
+corevalues = {'Ba':[3.45,1,0],
+              'Ti':[4,1,0],
+              'O':[0.472,1,0],
+              'Er':[3.451,1,0]}
+shellvalues = {'Ba':[-1.45,1,0],
+                'O':[-2.472,1,0]}
+def gencode(lat,out):
+    #takes a lattice and generates an output file
+    (c,d,e) = (1,1,1)
+
+    file = open(out,'w+')
+    for x in lat.genfractional():
+        if x.modeltype() == 'coreshell':
+            genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:.8f} {:.5f} {:.5f} \n'.format(x.type,'core', x.pos[0],x.pos[1],x.pos[2],corevalues[x.type][0],corevalues[x.type][1],corevalues[x.type][2])
+            file.write(genericstring1)
+            genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:.8f} {:.5f} {:.5f} \n'.format(x.type,'shel', x.pos[0],x.pos[1],x.pos[2],shellvalues[x.type][0],shellvalues[x.type][1],shellvalues[x.type][2])
+            file.write(genericstring1)
+        else:
+            genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:.8f} {:.5f} {:.5f} \n'.format(x.type,'core', x.pos[0],x.pos[1],x.pos[2],corevalues[x.type][0],corevalues[x.type][1],corevalues[x.type][2])
+            file.write(genericstring1)
+
+    return
+def genwholefile()
+
+gencode(lat,'testing.txt')
+
+print(lat.atoms[1].modeltype())
