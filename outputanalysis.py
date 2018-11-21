@@ -1,14 +1,24 @@
 def grab_total_energy(path):
     data = open(path, 'r').read()
-    position = data.find('Total lattice energy')
     skip_to_data = 34
-    data_start = position + skip_to_data
-    data_end = data.find(' ',data_start)
-    string = data[data_start:data_end]
-    if string[0] != '-':
-        print ('Non negative total energy, Be careful!!')
+    position = 0
+    string = []
+    test_find = 'Total lattice energy'
+    position = data.find(test_find)
+    while position != -1:
+        data_start = data.find('-', position)
+        data_end = data.find(' ',data_start)
+        new_string = data[data_start:data_end]
+        string.append(new_string)
+        position = data_end
+        position = data.find(test_find, data_end)
+        print(position)
 
 
     return string
 path = 'output1.gout'
-grab_total_energy(path)
+
+def grab_last_total_energy(path):
+    return grab_total_energy(path)[3]
+
+print(grab_last_total_energy(path))
