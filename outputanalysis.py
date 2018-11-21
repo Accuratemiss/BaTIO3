@@ -9,7 +9,7 @@ def grab_total_energy(path):
         data_start = data.find('-', position)
         data_end = data.find(' ',data_start)
         new_string = data[data_start:data_end]
-        string.append(new_string)
+        string.append(float(new_string))
         position = data_end
         position = data.find(test_find, data_end)
         print(position)
@@ -17,7 +17,7 @@ def grab_total_energy(path):
 
     return string
 path = 'output1.gout'
-
+print (('2'==True))
 def grab_last_total_energy(path):
     return grab_total_energy(path)[3]
 
