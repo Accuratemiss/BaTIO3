@@ -1,113 +1,11 @@
 import numpy as np
 import copy
+import scipy as sp
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from atom_class import atom
+from lattice_class import lattice
 
-class atom(object):
-    """defines an atom/vancancy with the properties
-    of position and type .
-            pos = position of atom in lattice space
-            type = type of atom/vacanvy in space"""
-    def __init__(self, pos, type):
-        self.pos = pos
-        self.type = type
-    def properties(self):
-        charges = {'Ba':2,
-                   'O':-2,
-                   'Ti':4,
-                   'Ti3':3,
-                   'O_v':2,
-                   'Ba_v':-2,
-                   'Ti_v':-4,
-                   'Ti3_v':-3}
-
-        return charges[self.type]
-
-    def modeltype(self):
-        types = {'Ba':'coreshell',
-                   'O':'coreshell',
-                   'Ti':'core',
-                   'Er':'core'}
-        return types[self.type]
-
-class lattice(object):
-    """contains atoms is a list of all the atoms stored as lattoce
-    vectors and a lattice parameters
-            atoms = list of all atoms/vacancies/
-            lp = lattice parameters of unit cell"""
-    def __init__(self, atoms, lp):
-        self.atoms = atoms
-        self.lp = lp
-
-    def add(self,x):
-        #adds an atom to the unit cell
-        self.atoms.append(x)
-        return
-
-    def getpos(self):
-        #generates a list of positions of all the atoms
-        out = []
-        for x in self.atoms:
-            out.append(x.pos)
-        return out
-
-    def realpos(self):
-        #generates a real position from lattice parameter and crystal direction
-        out = []
-        for x in self.getpos():
-            mul = np.multiply(x, self.lp)
-            out.append(mul)
-            return out
-    def genvacancy(self,v_pos,v_type):
-        #generates a vacancy and checks the type of atom on that site
-        #v_pos is the vacancy position
-        n = 0
-        for x in self.atoms:
-            if x.pos == v_pos:
-                if x.type == v_type:
-                    x.type = x.type + '_v'
-                    n = n+1
-                else:
-                    pass
-                    #add error handling here
-                    #except('Oops there is more than one atom on that site!')
-        return
-    def geninterstitial(self,i_pos,i_type):
-        for x in self.atoms:
-            if x.pos == i_pos:
-                #error
-                pass
-
-        self.add(atom(i_pos,i_type))
-        return
-    def getdimensions(self):
-        max = [0,0,0]
-        for x in self.atoms:
-            if x.pos[0] > max[0]:
-                max[0] = x.pos[0]
-        # for x in self.atoms:
-            if x.pos[1] > max[1]:
-                max[1] = x.pos[1]
-            else:
-                pass
-            if x.pos[2] > max[2]:
-                max[2] = x.pos[2]
-        return max
-
-
-    def genfractional(self):
-        out=[]
-        max = self.getdimensions()
-        for x in self.atoms:
-            out.append(atom(np.divide(x.pos, max), x.type))
-        return out
-
-
-#Generated BaTio4 cell
-# lat = lattice([Ba((0,0,0)),Ba((1,0,0))], (4,4,4))
-#
-# new = Ba((1,1,1))
-# lat.add(new)
-
-###Maybe dont touch
 def makecell():
     #initialises a BaTiO3 unit makecell
     #soz for the global variable, bad James
@@ -160,22 +58,69 @@ def supercell(lat,n):
                 lat.add(atom(newpos,y.type))
 
     return lat
+lat = lattice([],[4,4,4])
+element_tags = ['Ba', 'O ', 'Ti']
 
-###test code###
-lat = supercell (lat,5)
-# lat.geninterstitial((0.1,0.1,0),'O')
-# max = [0,0,0]
+def extract_pos(line, element):
+    x_start = line.find('core ') + 5
+    if x_start == 4:
+        if line.find('shel ') != -1:
+            return 'shel'
+        else:
+            print('Bad Stuff!!')
+    else:
+        pos_out= []
+        x_end = line.find(' ', x_start)
+        pos_out.append(float(line[x_start:x_end]))
+        y_start = x_end + 1
+        print(y_start)
+        y_end = line.find(' ', y_start)
+        pos_out.append(float(line[y_start:y_end]))
+        z_start = y_end + 1
+        z_end = line.find(' ', z_start)
+        pos_out.append(float(line[z_start:z_end]))
+    return pos_out
 
 
-# for x in lat.genfractional():
-#     print(str(x.pos) + ' ' + str(x.type))
-# atomdict = {'Ba':'Ba  core '}
-# test = 5.24242424
-# a = 'a'
-# b = 'a'
-#genericstring1 = '{:.3f} {:.3f}'.format(test,test) #
-##def gencode(lat):
-#print(genericstring1)
+def import_from_file(path,start,stop):
+    #copy pasted soz guys, little bit of a bodge
+    out = lattice([], [4,4,4])
+
+    ### opens fiileas a list containing each line as a value
+    def openfile(filename):
+        with open(path, "r") as f:
+            all_lines = f.readlines()
+        return all_lines
+    data = openfile(path)
+
+    data_slice = data[start:stop]
+    #print(data_slice)
+    n = float(start)
+    for x in data_slice:
+        if x.find('#') == -1:
+            for element in element_tags:
+                if x[0:2] == element:
+                    coords = extract_pos(x, element)
+                    if coords == 'shel':
+                        pass
+                    else:
+                        print(coords)
+                        if element == 'O ':
+                            out.AddFractional(coords, 'O', 5)
+                        else:
+                            out.AddFractional(coords, element, 5)
+                            n = n+1
+                        print(n)
+        else:
+            pass
+
+
+    return out
+
+lat = import_from_file('BaTiO3125.gin',13,1137)
+n = 0
+
+
 corevalues = {'Ba':[3.45,1,0],
               'Ti':[4,1,0],
               'O':[0.472,1,0],
@@ -187,15 +132,17 @@ def gencode(lat):
     (c,d,e) = (1,1,1)
 
     file = open('temp.txt','w+')
-    for x in lat.genfractional():
-        if x.modeltype() == 'coreshell':
-            genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:7.8f} {:.5f} {:.5f} \n'.format(x.type,'core', x.pos[0],x.pos[1],x.pos[2],corevalues[x.type][0],corevalues[x.type][1],corevalues[x.type][2])
-            file.write(genericstring1)
-            genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:9.7f} {:.5f} {:.5f} \n'.format(x.type,'shel', x.pos[0],x.pos[1],x.pos[2],shellvalues[x.type][0],shellvalues[x.type][1],shellvalues[x.type][2])
-            file.write(genericstring1)
-        else:
-            genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:.8f} {:.5f} {:.5f} \n'.format(x.type,'core', x.pos[0],x.pos[1],x.pos[2],corevalues[x.type][0],corevalues[x.type][1],corevalues[x.type][2])
-            file.write(genericstring1)
+    for x in lat.genfractional([5,5,5]):
+        print (x.pos)
+        if x.type[-2:] != '_v':
+            if x.modeltype() == 'coreshell':
+                genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:7.8f} {:.5f} {:.5f} \n'.format(x.type,'core', x.pos[0],x.pos[1],x.pos[2],corevalues[x.type][0],corevalues[x.type][1],corevalues[x.type][2])
+                file.write(genericstring1)
+                genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:9.7f} {:.5f} {:.5f} \n'.format(x.type,'shel', x.pos[0],x.pos[1],x.pos[2],shellvalues[x.type][0],shellvalues[x.type][1],shellvalues[x.type][2])
+                file.write(genericstring1)
+            else:
+                genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:.8f} {:.5f} {:.5f} \n'.format(x.type,'core', x.pos[0],x.pos[1],x.pos[2],corevalues[x.type][0],corevalues[x.type][1],corevalues[x.type][2])
+                file.write(genericstring1)
 
     return
 
@@ -214,11 +161,13 @@ def genwholefile(lat,out):
     file.write(temp.read())
     file.write(postamble.read())
 
-test = -1.458627262
+def plotter():
+    fig = plt.figure()
+    print(lat.getpos()[0])
+    ax = fig.add_subplot(111, projection = '3d')
+    ax.scatter()
+    plt.show()
 
-print('{:10.8f}'.format(test))
-
+#genwholefile(lat,'asdk;jfhasfha')
 gencode(lat)
-# genwholefile(lat,'test01.txt')
-#
-# print(lat.atoms[1].modeltype())
+print('good stuff')
