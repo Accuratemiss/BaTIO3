@@ -73,7 +73,7 @@ def extract_pos(line, element):
         x_end = line.find(' ', x_start)
         pos_out.append(float(line[x_start:x_end]))
         y_start = x_end + 1
-        print(y_start)
+        #print(y_start)
         y_end = line.find(' ', y_start)
         pos_out.append(float(line[y_start:y_end]))
         z_start = y_end + 1
@@ -104,21 +104,13 @@ def import_from_file(path,start,stop):
                     if coords == 'shel':
                         pass
                     else:
-                        print(coords)
+
                         if element == 'O ':
                             out.AddFractional(coords, 'O', 5)
                         else:
                             out.AddFractional(coords, element, 5)
                             n = n+1
-                        print(n)
-        else:
-            pass
-
-
     return out
-
-lat = import_from_file('BaTiO3125.gin',13,1137)
-n = 0
 
 
 corevalues = {'Ba':[3.45,1,0],
@@ -133,7 +125,7 @@ def gencode(lat):
 
     file = open('temp.txt','w+')
     for x in lat.genfractional([5,5,5]):
-        print (x.pos)
+        #print (x.pos)
         if x.type[-2:] != '_v':
             if x.modeltype() == 'coreshell':
                 genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:7.8f} {:.5f} {:.5f} \n'.format(x.type,'core', x.pos[0],x.pos[1],x.pos[2],corevalues[x.type][0],corevalues[x.type][1],corevalues[x.type][2])
@@ -169,5 +161,3 @@ def plotter():
     plt.show()
 
 #genwholefile(lat,'asdk;jfhasfha')
-gencode(lat)
-print('good stuff')

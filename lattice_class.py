@@ -15,20 +15,19 @@ class lattice(object):
         self.lp = lp
 
     def add(self,x):
-        #adds an atom to the unit cell
+        #adds an atom to the  cell
         self.atoms.append(x)
         return
     def AddFractional(self, pos, type, supercell):
-        #adds an atom with fractional coordinates
+        #adds an atom from fractional coordinates eg. what the gulp files are in
         super_list = [supercell, supercell, supercell]
         lat_pos = np.multiply(pos,super_list)
-        self.atoms.append(atom(lat_pos, type))
+        self.atoms.append(atom(list(lat_pos), type))
         return
 
     def getpos(self):
         #generates a list of positions of all the atoms
-        out = self.atoms[0].pos
-        print(out)
+        out = np.array([[],[],[]])
         for x in self.atoms[1:]:
             np.append(out, x.pos, axis = 0)
         return out
@@ -41,26 +40,28 @@ class lattice(object):
             out.append(mul)
             return out
     def replaceatom(self,v_pos,v_type):
-        #generates a vacancy and checks the type of atom on that site
-        #v_pos is the vacancy position
-        n = 0
+        #changes the type of the atom, wont work if there is no atom there!!
+        check = False
         for x in self.atoms:
             if x.pos == v_pos:
-                if x.type == v_type:
-                    x.type = x.type + '_v'
-                    n = n+1
-                else:
-                    raise Exception('tried to replace atom when atom did not exist')
+                x.type = v_type
+                check = True
+        if check == False:
+            print('no atom at that position')
 
-    def geninterstitial(self,i_pos,i_type):
+        return
+    def addinterstitial(self,i_pos,i_type):
+        #adds an atom where there is no atom, will throw an error if you try to
+        #add interstitial where there is an atom!!!
         for x in self.atoms:
             if x.pos == i_pos:
-                #error
-                pass
+                raise Exception('Interstitial placed where atom is!')
 
-        self.add(atom(i_pos,i_type))
+        self.add(atom(i_pos, i_type))
+
         return
     def getdimensions(self):
+        #gets the dimensions of the lattice
         max = [0,0,0]
         for x in self.atoms:
             if x.pos[0] > max[0]:
@@ -78,6 +79,21 @@ class lattice(object):
     def genfractional(self,max):
         out=[]
         # max = self.getdimensions()
+        #generates fractional coordinates
         for x in self.atoms:
             out.append(atom(np.divide(x.pos, max), x.type))
+        return out
+
+    def gettype(self, position):
+        #returns the type of the atom at that posiition
+        for x in self.atoms:
+            if x.pos == position:
+                return x.type
+
+    def singleelement(self, element):
+        #generates a list containing only a single type of atoms
+        out =[]
+        for x in self.atoms:
+            if x.type == element:
+                out.append(x)
         return out
