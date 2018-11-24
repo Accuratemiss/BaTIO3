@@ -152,12 +152,13 @@ def genwholefile(lat,out):
     file.write(preamble.read())
     file.write(temp.read())
     file.write(postamble.read())
-
+    return
 def plotter():
     fig = plt.figure()
     print(lat.getpos()[0])
     ax = fig.add_subplot(111, projection = '3d')
     ax.scatter()
     plt.show()
+    return
 
 #genwholefile(lat,'asdk;jfhasfha')

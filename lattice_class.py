@@ -91,6 +91,7 @@ class lattice(object):
                 return x.type
 
     def singleelement(self, element):
+        #test
         #generates a list containing only a single type of atoms
         out =[]
         for x in self.atoms:
