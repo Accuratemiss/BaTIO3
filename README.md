@@ -39,3 +39,12 @@ you havent gone deep enough if that makes sense. You are printing the container 
 
 If you print lat.atoms[0].pos you will get the posisitions. THis is because you open the lat.atoms container. Which is a list
 The [0] goes to the first item in the list, then .pos accesses the positions.
+
+Files you need:
+preamble
+postamble
+Cellgenerator.py
+atom_class.py
+lattice_class.py
+
+firstfun.py has a demo file which will make files.
