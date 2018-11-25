@@ -15,14 +15,14 @@ lat = cg.import_from_file('base.gin',13,1137)
 lat.replaceatom([0.5,0.5,1.5],'Er')
 lat.replaceatom([3.5,3.5,3.5],'Er')
 
+
 #generates a list of O atoms
 Olist =lat.singleelement('O')
-
 #generates an list from 1-375 to pick 50 sites ty try O atom
 samplearray = range(0,len(Opos))
-
 #random 50 sites to try
 index = random.sample(samplearray,50)
+#####
 n=0
 for x in index:
     #copy the lattice to stop any weirdness

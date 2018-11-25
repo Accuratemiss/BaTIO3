@@ -14,7 +14,7 @@ class atom(object):
         self.type = type
 
     def __str__(self):
-        return str(self.pos) + self.type
+        return 'position:'str(self.pos) +  ' type:'self.type
 
     def properties(self):
         charges = {'Ba':2,
