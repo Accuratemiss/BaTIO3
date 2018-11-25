@@ -47,7 +47,7 @@ class lattice(object):
                 x.type = v_type
                 check = True
         if check == False:
-            print('no atom at that position')
+            raise Exception('Trying to replace an atom where there is no atom!')
 
         return
     def addinterstitial(self,i_pos,i_type):
@@ -75,7 +75,6 @@ class lattice(object):
                 max[2] = x.pos[2]
         return max
 
-
     def genfractional(self,max):
         out=[]
         # max = self.getdimensions()
@@ -91,7 +90,6 @@ class lattice(object):
                 return x.type
 
     def singleelement(self, element):
-        #test
         #generates a list containing only a single type of atoms
         out =[]
         for x in self.atoms:
