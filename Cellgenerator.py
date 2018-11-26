@@ -127,14 +127,12 @@ def gencode(lat):
     for x in lat.genfractional([5,5,5]):
         #print (x.pos)
         if x.type[-2:] != '_v':
-            if x.modeltype() == 'coreshell':
-                genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:7.8f} {:.5f} {:.5f} \n'.format(x.type,'core', x.pos[0],x.pos[1],x.pos[2],corevalues[x.type][0],corevalues[x.type][1],corevalues[x.type][2])
-                file.write(genericstring1)
-                genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:9.7f} {:.5f} {:.5f} \n'.format(x.type,'shel', x.pos[0],x.pos[1],x.pos[2],shellvalues[x.type][0],shellvalues[x.type][1],shellvalues[x.type][2])
-                file.write(genericstring1)
-            else:
-                genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:.8f} {:.5f} {:.5f} \n'.format(x.type,'core', x.pos[0],x.pos[1],x.pos[2],corevalues[x.type][0],corevalues[x.type][1],corevalues[x.type][2])
-                file.write(genericstring1)
+            genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:7.8f} {:.5f} {:.5f} \n'.format(x.type,'core', x.pos[0],x.pos[1],x.pos[2],corevalues[x.type][0],corevalues[x.type][1],corevalues[x.type][2])
+            file.write(genericstring1)
+    for x in lat.genfractional([5,5,5]):
+        if x.modeltype() == 'coreshell':
+            genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:9.7f} {:.5f} {:.5f} \n'.format(x.type,'shel', x.pos[0],x.pos[1],x.pos[2],shellvalues[x.type][0],shellvalues[x.type][1],shellvalues[x.type][2])
+            file.write(genericstring1)
 
     return
 
@@ -152,12 +150,13 @@ def genwholefile(lat,out):
     file.write(preamble.read())
     file.write(temp.read())
     file.write(postamble.read())
-
+    return
 def plotter():
     fig = plt.figure()
     print(lat.getpos()[0])
     ax = fig.add_subplot(111, projection = '3d')
     ax.scatter()
     plt.show()
+    return
 
 #genwholefile(lat,'asdk;jfhasfha')
