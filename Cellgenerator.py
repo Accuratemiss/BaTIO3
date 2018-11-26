@@ -83,34 +83,34 @@ def extract_pos(line, element):
 
 
 def import_from_file(path,start,stop):
-    #copy pasted soz guys, little bit of a bodge
-    out = lattice([], [4,4,4])
-
-    ### opens fiileas a list containing each line as a value
-    def openfile(filename):
-        with open(path, "r") as f:
-            all_lines = f.readlines()
-        return all_lines
-    data = openfile(path)
-
-    data_slice = data[start:stop]
-    #print(data_slice)
-    n = float(start)
-    for x in data_slice:
-        if x.find('#') == -1:
-            for element in element_tags:
-                if x[0:2] == element:
-                    coords = extract_pos(x, element)
-                    if coords == 'shel':
-                        pass
-                    else:
-
-                        if element == 'O ':
-                            out.AddFractional(coords, 'O', 5)
-                        else:
-                            out.AddFractional(coords, element, 5)
-                            n = n+1
-    return out
+    # #copy pasted soz guys, little bit of a bodge
+    # out = lattice([], [4,4,4])
+    #
+    # ### opens fiileas a list containing each line as a value
+    # def openfile(filename):
+    #     with open(path, "r") as f:
+    #         all_lines = f.readlines()
+    #     return all_lines
+    # data = openfile(path)
+    #
+    # data_slice = data[start:stop]
+    # #print(data_slice)
+    # n = float(start)
+    # for x in data_slice:
+    #     if x.find('#') == -1:
+    #         for element in element_tags:
+    #             if x[0:2] == element:
+    #                 coords = extract_pos(x, element)
+    #                 if coords == 'shel':
+    #                     pass
+    #                 else:
+    #
+    #                     if element == 'O ':
+    #                         out.AddFractional(coords, 'O', 5)
+    #                     else:
+    #                         out.AddFractional(coords, element, 5)
+    #                         n = n+1
+    # return out
 
 
 corevalues = {'Ba':[3.45,1,0],
@@ -135,6 +135,7 @@ def gencode(lat):
             file.write(genericstring1)
 
     return
+
 
 def genwholefile(lat,out):
     gencode(lat)

@@ -10,8 +10,12 @@ from mpl_toolkits.mplot3d import Axes3D
 #have to use .cg to things from cellgenerator script!
 
 lat = cg.import_from_file('base.gin',13,1137)
+n = 0
 
-cg.genwholefile(lat,'testout.txt')
+for x in lat.atoms:
+    n += x.properties()
+print(n)
+#cg.genwholefile(lat,'testout.txt')
 #adds two Er atoms
 # lat.replaceatom([0.5,0.5,1.5],'Er')
 # lat.replaceatom([3.5,3.5,3.5],'Er')
