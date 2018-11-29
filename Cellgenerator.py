@@ -119,6 +119,7 @@ corevalues = {'Ba':[3.45,1,0],
               'Er':[3.451,1,0]}
 shellvalues = {'Ba':[-1.45,1,0],
                 'O':[-2.472,1,0]}
+
 def gencode(lat):
     #takes a lattice and generates an output file called temp.txt
     (c,d,e) = (1,1,1)
@@ -136,21 +137,26 @@ def gencode(lat):
 
     return
 
-def genwholefile(lat,out):
+def genwholefile(lat,out, prelude = None):
     gencode(lat)
     file = open(out,'w+')
     preamble = open('preamble','r')
     temp = open('temp.txt', 'r')
     postamble = open('postamble','r')
-    try:
+    if prelude != None:
         file.write(prelude)
-    except:
-        print('No prelude')
-        pass
     file.write(preamble.read())
     file.write(temp.read())
     file.write(postamble.read())
     return
+
+def check_charge(lat):
+    n = 0
+    for x in lat.atoms:
+        #adds charge to n
+        n += x.properties()
+    return n
+
 def plotter():
     fig = plt.figure()
     print(lat.getpos()[0])
