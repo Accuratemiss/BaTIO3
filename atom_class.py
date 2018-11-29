@@ -14,7 +14,7 @@ class atom(object):
         self.type = type
 
     def __str__(self):
-        return 'position:' + str(self.pos) +  ' type:'+ self.type
+        return str(self.pos)
 
     def properties(self):
         charges = {'Ba':2,
@@ -24,7 +24,8 @@ class atom(object):
                    'O_v':2,
                    'Ba_v':-2,
                    'Ti_v':-4,
-                   'Ti3_v':-3}
+                   'Ti3_v':-3,
+                   'Er':3}
 
         return charges[self.type]
 

@@ -12,11 +12,13 @@ from mpl_toolkits.mplot3d import Axes3D
 lat = cg.import_from_file('base.gin',13,1137)
 n = 0
 
-for x in lat.atoms:
-    n += x.properties()
-print(n)
-#cg.genwholefile(lat,'testout.txt')
-#adds two Er atoms
+cg.genwholefile(lat, 'test.gin')
+# for x in lat.atoms:
+#     n += x.properties()
+# print(n)
+#
+# cg.genwholefile(lat,'testout.txt')
+# adds two Er atoms
 # lat.replaceatom([0.5,0.5,1.5],'Er')
 # lat.replaceatom([3.5,3.5,3.5],'Er')
 #
@@ -29,14 +31,14 @@ print(n)
 # index = random.sample(samplearray,50)
 # #####
 # n=0
-# # for x in index:
-# #     #copy the lattice to stop any weirdness
-# #     new_lat = copy.deepcopy(lat)
-# #     #Olist contains atoms, so .pos get the position out of Olist
-# #     #replaces O with vacanty
-# #     new_lat.replaceatom(Olist[x].pos,'O_v')
-# #     cg.genwholefile(new_lat, '2Er1Ovac'+' '+ str(n))
-# #     n+=1
+# for x in index:
+#     #copy the lattice to stop any weirdness
+#     new_lat = copy.deepcopy(lat)
+#     #Olist contains atoms, so .pos get the position out of Olist
+#     #replaces O with vacanty
+#     new_lat.replaceatom(Olist[x].pos,'O_v')
+#     cg.genwholefile(new_lat, '2Er1Ovac'+' '+ str(n))
+#     n+=1
 
 
 

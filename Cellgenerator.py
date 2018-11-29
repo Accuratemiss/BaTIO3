@@ -83,34 +83,34 @@ def extract_pos(line, element):
 
 
 def import_from_file(path,start,stop):
-    # #copy pasted soz guys, little bit of a bodge
-    # out = lattice([], [4,4,4])
-    #
-    # ### opens fiileas a list containing each line as a value
-    # def openfile(filename):
-    #     with open(path, "r") as f:
-    #         all_lines = f.readlines()
-    #     return all_lines
-    # data = openfile(path)
-    #
-    # data_slice = data[start:stop]
-    # #print(data_slice)
-    # n = float(start)
-    # for x in data_slice:
-    #     if x.find('#') == -1:
-    #         for element in element_tags:
-    #             if x[0:2] == element:
-    #                 coords = extract_pos(x, element)
-    #                 if coords == 'shel':
-    #                     pass
-    #                 else:
-    #
-    #                     if element == 'O ':
-    #                         out.AddFractional(coords, 'O', 5)
-    #                     else:
-    #                         out.AddFractional(coords, element, 5)
-    #                         n = n+1
-    # return out
+    #copy pasted soz guys, little bit of a bodge
+    out = lattice([], [4,4,4])
+
+    ### opens fiileas a list containing each line as a value
+    def openfile(filename):
+        with open(path, "r") as f:
+            all_lines = f.readlines()
+        return all_lines
+    data = openfile(path)
+
+    data_slice = data[start:stop]
+    #print(data_slice)
+    n = float(start)
+    for x in data_slice:
+        if x.find('#') == -1:
+            for element in element_tags:
+                if x[0:2] == element:
+                    coords = extract_pos(x, element)
+                    if coords == 'shel':
+                        pass
+                    else:
+
+                        if element == 'O ':
+                            out.AddFractional(coords, 'O', 5)
+                        else:
+                            out.AddFractional(coords, element, 5)
+                            n = n+1
+    return out
 
 
 corevalues = {'Ba':[3.45,1,0],
@@ -119,6 +119,7 @@ corevalues = {'Ba':[3.45,1,0],
               'Er':[3.451,1,0]}
 shellvalues = {'Ba':[-1.45,1,0],
                 'O':[-2.472,1,0]}
+
 def gencode(lat):
     #takes a lattice and generates an output file called temp.txt
     (c,d,e) = (1,1,1)
@@ -136,22 +137,26 @@ def gencode(lat):
 
     return
 
-
-def genwholefile(lat,out):
+def genwholefile(lat,out, prelude = None):
     gencode(lat)
     file = open(out,'w+')
     preamble = open('preamble','r')
     temp = open('temp.txt', 'r')
     postamble = open('postamble','r')
-    try:
+    if prelude != None:
         file.write(prelude)
-    except:
-        print('No prelude')
-        pass
     file.write(preamble.read())
     file.write(temp.read())
     file.write(postamble.read())
     return
+
+def check_charge(lat):
+    n = 0
+    for x in lat.atoms:
+        #adds charge to n
+        n += x.properties()
+    return n
+
 def plotter():
     fig = plt.figure()
     print(lat.getpos()[0])
