@@ -27,23 +27,24 @@ def grab_total_energy(path):
 
 def list_from_folder(folder_path):
     curr_path = os.getcwd()
-    os.chdir(curr_path+'/'+folder_path)
+    os.chdir(curr_path+'\\'+folder_path)
     file_list = os.listdir()
     print(os.getcwd())
 
     out = [['filename', 'Energy']]
     for file in file_list:
-        if file == 'outputanalysis.py':
-            pass
-        else:
+        if file[-5:] == '.gout':
             out_list = [file, str(grab_total_energy(file))]
             print(out)
             out.append(out_list)
             print(out)
-    out= np.array(out)
+        else:
+            print('skipped file', file)
+            print(file[-5:])
+    out = np.array(out)
     return out
 
 list = list_from_folder('test_files')
 print(np.array(list))
-np.savetxt('output.csv',np.array(list))
+np.savetxt('output.csv',np.array(list), fmt = '%s')
 print(list)
