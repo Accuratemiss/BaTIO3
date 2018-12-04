@@ -15,36 +15,35 @@ def grab_total_list(path):
         string.append(float(new_string))
         position = data_end
         position = data.find(test_find, data_end)
-        print(position)
-
     return string
 path = 'output1.gout'
-print (('2'==True))
-
 def grab_total_energy(path):
     #pulls out everything
     return grab_total_list(path)[3]
+
+errorcount = 0
 
 def list_from_folder(folder_path):
     curr_path = os.getcwd()
     os.chdir(curr_path+'\\'+folder_path)
     file_list = os.listdir()
-    print(os.getcwd())
-
+    global errorcount
     out = [['filename', 'Energy']]
     for file in file_list:
         if file[-5:] == '.gout':
-            out_list = [file, str(grab_total_energy(file))]
-            print(out)
-            out.append(out_list)
-            print(out)
+            try:
+                out_list = [file, str(grab_total_energy(file))]
+                out.append(out_list)
+                print('Read: ' + file)
+            except:
+                print('There was a problem with: ' + file)
+                errorcount += 1
         else:
             print('skipped file', file)
             print(file[-5:])
     out = np.array(out)
     return out
 
-list = list_from_folder('test_files')
-print(np.array(list))
+list = list_from_folder('test_2')
+print('Couldn\'t read ' + str(errorcount) + ' .gout files')
 np.savetxt('output.csv',np.array(list), fmt = '%s')
-print(list)
