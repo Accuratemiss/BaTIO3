@@ -123,17 +123,17 @@ shellvalues = {'Ba':[-1.45,1,0],
 def gencode(lat):
     #takes a lattice and generates an output file called temp.txt
     (c,d,e) = (1,1,1)
-
     file = open('temp.txt','w+')
+
     for x in lat.genfractional([5,5,5]):
-        #print (x.pos)
-        if x.type[-2:] != '_v':
+        if x.modeltype() == 'vacancy':
+            pass
+        else:
             genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:7.8f} {:.5f} {:.5f} \n'.format(x.type,'core', x.pos[0],x.pos[1],x.pos[2],corevalues[x.type][0],corevalues[x.type][1],corevalues[x.type][2])
             file.write(genericstring1)
-    for x in lat.genfractional([5,5,5]):
-        if x.modeltype() == 'coreshell':
-            genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:9.7f} {:.5f} {:.5f} \n'.format(x.type,'shel', x.pos[0],x.pos[1],x.pos[2],shellvalues[x.type][0],shellvalues[x.type][1],shellvalues[x.type][2])
-            file.write(genericstring1)
+            if x.modeltype() == 'coreshell':
+                genericstring1 = '{:2}    {:>4} {:.7f} {:7f} {:7f} {:9.7f} {:.5f} {:.5f} \n'.format(x.type,'shel', x.pos[0],x.pos[1],x.pos[2],shellvalues[x.type][0],shellvalues[x.type][1],shellvalues[x.type][2])
+                file.write(genericstring1)
 
     return
 
