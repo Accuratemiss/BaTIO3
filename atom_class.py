@@ -21,10 +21,10 @@ class atom(object):
                    'O':-2,
                    'Ti':4,
                    'Ti3':3,
-                   'O_v':2,
-                   'Ba_v':-2,
-                   'Ti_v':-4,
-                   'Ti3_v':-3,
+                   'O_v':0,
+                   'Ba_v':0,
+                   'Ti_v':0,
+                   'Ti3_v':0,
                    'Er':3}
 
         return charges[self.type]
@@ -33,5 +33,9 @@ class atom(object):
         types = {'Ba':'coreshell',
                    'O':'coreshell',
                    'Ti':'core',
-                   'Er':'core'}
+                   'Er':'core',
+                  'O_v':'vacancy',
+                  'Ba_v':'vacancy',
+                  'Ti_v':'vacancy',
+                  'Ti3_v':'vacancy'}
         return types[self.type]
