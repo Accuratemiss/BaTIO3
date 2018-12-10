@@ -29,35 +29,37 @@ mech1 = int(mech1)
 mech2 = input('Please enter the number of mech2 instances: ')
 mech2 = int(mech2)
 
-# num_runs = 3
-# name = 'tested.gin'
-#
-# mech1 = 1
-# mech2 = 2
+num_runs = 3
+name = 'tested.gin'
+
+mech1 = 2
+mech2 = 2
 num_table = []
 
 
 def mech_Ti_Ba(Ba_sites, Ti_sites):
     #carries out Ti/Ba substitution
+    # print('replacing', len(Ba_sites), len(Ti_sites))
     for x in Ba_sites:
-        # print('yo')
+
+        # print('Ba for Er')
         new_lat.replaceatom(x.pos, 'Er')
         num_table.append(str(n) + ' ' + str(x) + ' ' + str(x.type))
         # print(x.type)
 
     for x in Ti_sites:
-        # print('hi')
-        # print(x.type)
-
+        # print('Ti for Er')
         new_lat.replaceatom(x.pos, 'Er')
         num_table.append(str(n) + ' ' + str(x) + ' ' + str(x.type))
-        return
+    return
 
 def mech_Ti_Ov(Ti_sites, O_sites):
     for x in Ti_sites:
+        # print('Happened')
         new_lat.replaceatom(x.pos, 'Er')
         num_table.append(str(n) + ' ' + str(x) + ' ' + str(x.type))
     for x in O_sites:
+        # print('OO happened')
         new_lat.replaceatom(x.pos, 'O_v')
         num_table.append(str(n) + ' ' + str(x) + ' ' + str(x.type))
 
@@ -75,17 +77,30 @@ while n <= num_runs:
     Ba_num = copy.copy(mech1)
     Ba_master = random.sample(Ba_list, Ba_num)
 
+
     Ti_num = mech1 + (2 * mech2)
     Ti_master = random.sample(Ti_list, Ti_num)
+    Ti_mech1 = Ti_master[0:mech1]
+    Ti_mech2 = Ti_master[mech1:]
+
+    for x in [Ti_mech1, Ti_mech2]:
+        # print('AA', len(x))
+    # print(len(Ti_master))
 
     O_num = copy.copy(mech2)
     O_master = random.sample(O_list, O_num)
 
     if not mech1 == 0:
-        mech_Ti_Ba(Ba_master[0:mech1], Ti_master[0: mech1])
+        mech_Ti_Ba(Ba_master, Ti_mech1)
+        for x in Ba_master[0:mech1]:
+            # print(x.type)
+        for x in Ti_master[0: mech1-1]:
+            # print(x.type)
 
     if not mech2 == 0:
-        mech_Ti_Ov(Ti_master[mech1:], O_master)
+        # print(len(Ti_mech2))
+        mech_Ti_Ov(Ti_mech2, O_master)
+        # print('yo')
 
     try:
         errorcharge(new_lat)
